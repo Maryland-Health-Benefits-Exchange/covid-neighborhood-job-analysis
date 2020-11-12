@@ -1,5 +1,7 @@
 # Estimating Low Income Job loss due to COVID-19
 
+E. Leo: MHBE updated this analysis to include only job loss in Maryland across all incomes. This readme file has been left unchanged in the interest of transparency, but all references to other states or filters on income have been removed from the scripts and not all scripts were utilized. See the modififed `update-master.R` for more details.
+
 This repository contains the code and data needed to estimate the number of
 low-income jobs lost to COVID-19 in every tract in the US. The scripts read in
 data from Census LODES, the BLS, WA state unemployment figures, and other data
