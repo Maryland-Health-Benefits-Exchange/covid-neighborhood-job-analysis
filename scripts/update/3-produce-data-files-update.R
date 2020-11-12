@@ -7,8 +7,7 @@ library(sf)
 library(testit)
 
 
-generate_job_loss_by_tract <- function(
-    puma_job_change_filpath = "data/processed-data/job_change_ipums_estimates_most_recent.csv") {
+generate_job_loss_by_tract <- function(puma_job_change_filpath = "data/processed-data/job_change_ipums_estimates_most_recent.csv") {
     # Function to generate job loss estimates by tract
     # INPUT
     # puma_job_change_filepath: filepath to puma_job_change csv outputted by
@@ -75,16 +74,20 @@ generate_job_loss_by_tract <- function(
         ungroup() %>% 
         # Sometimes when num and den are 0, % is returned as NaN, we change to 0
         mutate(percent_change_employment = replace_na(percent_change_employment, 0),
-                lodes_var = paste0('cns', lodes_var))      
+                lodes_var = paste0('cns', lodes_var))    
     
     assert("All Puma-lodes industry combinations are represnted in job loss file",
-        nrow(job_loss_estimates_by_puma) == 47020)
+        nrow(job_loss_estimates_by_puma) == 880) # change to only MD combos
+    
+    job_loss_estimates_by_puma <- job_loss_estimates_by_puma %>%
+        mutate(puma_geoid = as.numeric(puma_geoid))
 
     
     #----Generate job loss estimates for all tracts-----------------------------------
     # Generate job loss estimates for each industry across all tracts.
     # Every rown in job_loss_long is a tract-industry combo
     job_loss_long <- lodes_joined %>%
+        mutate(trct = as.numeric(trct)) %>%
         # Append PUMA for each tract using puma tract crosswalk
         left_join(puma_tract_xwalk, by = "trct") %>% 
         # keep only led industry variables
@@ -105,6 +108,7 @@ generate_job_loss_by_tract <- function(
 
     # Get total low income workers by tract. This will be used for CSV writeout to Data Portal
     # This number was requested by some users who wanted li unemployment rates by county/state,etc
+    # E.Leo update: this no longer pulls only Low Income job losses, keeping name for ease of use
     li_employment_by_tract <- job_loss_long %>%
         group_by(trct) %>%
         summarize(total_li_workers_employed = sum(value))
@@ -127,16 +131,17 @@ generate_job_loss_by_tract <- function(
     # The LODES data has one tract not found in the master 2018 Census tract file.
     # This is tract 12057980100, which is in Florida and seems to be mostly water.
     # For now we exlcude this tract from the analysis
+    # E.Leo update: do not need, not using FL
 
     # Display problematic tract
-    job_loss_wide %>%
-        group_by(trct) %>%
-        summarize(any_na = any(is.na(county_fips))) %>%
-        filter(any_na)
+    # job_loss_wide %>%
+    #    group_by(trct) %>%
+    #    summarize(any_na = any(is.na(county_fips))) %>%
+    #    filter(any_na)
 
     # Discard problematic tract
-    job_loss_wide <- job_loss_wide %>%
-        filter(trct != "12057980100")
+    # job_loss_wide <- job_loss_wide %>%
+    #    filter(trct != "12057980100")
 
 
 
@@ -152,6 +157,8 @@ generate_job_loss_by_tract <- function(
         filter(substr(GEOID, 6, 7) != "99")
 
     # join data to tract spatial information
+    job_loss_wide <- job_loss_wide %>%
+        mutate(trct = as.character(trct))
     job_loss_wide_sf <- left_join(my_tracts %>% select(GEOID),
         job_loss_wide,
         by = c("GEOID" = "trct")
@@ -160,8 +167,8 @@ generate_job_loss_by_tract <- function(
     # The 2018 Census tract file has one tract not found in the LODES data
     # This is tract 12086981000 near Miami Beach in Florida & has a population
     # of 62. For now we exlcude this tract from the analysis
-    job_loss_wide_sf <- job_loss_wide_sf %>%
-        filter(GEOID != "12086981000")
+    # job_loss_wide_sf <- job_loss_wide_sf %>%
+    #    filter(GEOID != "12086981000")
 
     # Check that the tracts contianed in job_loss_wide are the same after
     # adding spatial info

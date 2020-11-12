@@ -8,8 +8,9 @@ path <- "data/raw-data/big/"
 # Read in full Lodes Data
 lodes_all_raw <- read_csv(paste0(path, "rac_all.csv")) 
 
+# Don't need to use this, want all incomes
 # Read in Lodes data for income over 40k
-lodes_over_40_raw <- read_csv(paste0(path, "rac_se03.csv")) 
+# lodes_over_40_raw <- read_csv(paste0(path, "rac_se03.csv")) 
 
 # Read in data that we will use 2016 data for given data issues in 2017
 counties_to_get_2016 <- read_csv("data/processed-data/counties_to_get_2016.csv")
@@ -56,23 +57,23 @@ clean_lodes <- function(df){
 
 
 #generate lodes data for <40k jobs
-lodes_all <- lodes_all_raw %>%
-  clean_lodes()
+lodes_joined <- lodes_all_raw %>%
+  clean_lodes() %>%
+# Don't need to limit incomes
+# lodes_over_40 <- lodes_over_40_raw %>% 
+#  clean_lodes()
 
-lodes_over_40 <- lodes_over_40_raw %>% 
-  clean_lodes()
-
-lodes_joined <- left_join(lodes_all, 
-                          lodes_over_40, 
-                          by = c("year",
-                                 "trct",
-                                 "variable"), 
-                          suffix = c("_all", "_40")) %>% 
+# lodes_joined <- left_join(lodes_all, 
+  #                        lodes_over_40, 
+   #                       by = c("year",
+    #                             "trct",
+     #                            "variable"), 
+      #                    suffix = c("_all", "_40")) %>% 
   # subtract income>40k jobs from all jobs 
-  mutate(value = value_all - value_40) %>%
+ # mutate(value = value_all - value_40) %>%
   # remove total and 40k variables
-  select(-c(value_all, value_40)) %>% 
-  # write to csv
+  # select(-c(value_all, value_40)) %>% 
+  # write to csv, keep name for ease of use in other code
   write_csv("data/processed-data/lodes_joined.csv")
 
 # check how many values are na

@@ -32,8 +32,8 @@ download_by_state <- function(state) {
   )
   file.remove(str_glue("data/raw-data/big/{state}.zip"))
 }
-state_fips <- fromJSON("https://api.census.gov/data/2010/dec/sf1?get=NAME&for=state:*")
-state_fips <- state_fips[, 2][c(2:length(state_fips[, 2]))]
+state_fips <- 24 # edit to only include MD
+# state_fips <- state_fips[, 2][c(2:length(state_fips[, 2]))]
 dl <- state_fips %>% map(download_by_state)
 
 
@@ -62,11 +62,12 @@ download.file(
   mode = "wb"
 )
 
-my_states <- states(cb = T)
+my_states <- states(cb = T) %>%
+  filter(STATEFP=="24") # E.Leo: added filter for just MD
 my_cbsas <- core_based_statistical_areas(cb = T)
 
-my_counties <- counties(cb = T, year = 2018)
-my_counties_no_cb <- counties(cb = F, year = 2018)
+my_counties <- counties(state = "MD", cb = T, year = 2018) # E.Leo: MD only
+my_counties_no_cb <- counties(state = "MD", cb = F, year = 2018)
 
 my_pumas <- reduce(
   map(state_fips, function(x) {

@@ -25,6 +25,7 @@ update_bls_sae_data <- function(url =
    )
 }
 
+# E.Leo: commented out function call, do not need
 update_wa_ny_qcew_data <- function(zip_url =
                                       "https://data.bls.gov/cew/data/files/2019/csv/2019_qtrly_by_area.zip") {
    # (SAE does not have all industries for WA and NY)
@@ -59,6 +60,7 @@ update_wa_ny_qcew_data <- function(zip_url =
    unlink("data/raw-data/big/2019.q1-q3.by_area", recursive = TRUE)
 }
 
+# E.Leo: commented out function call, do not need
 update_all_us_qcew_data <- function(url =
                                        "https://data.bls.gov/cew/data/files/2019/xls/2019_all_county_high_level.zip") {
    # Download all states data
@@ -78,6 +80,8 @@ update_all_us_qcew_data <- function(url =
       to = "data/raw-data/big/us_qcew.xlsx"
    )
 }
+
+# E.Leo: commented out function call, do not need
 update_wa_unemp_data <- function(week_num) {
    # week_num: The week number to get unemployment data. This needs to be
    # manually increased by 1 every week. As of 06/07/20, latest week_num = 17

@@ -125,6 +125,7 @@ generate_county_cbsa_sum_files <- function(tmax_bins = tmax_bins,
         ungroup() %>%
         # add max industry job loss for whole county
         add_sum_bins(county_fips) %>%
+        mutate(county_fips = as.character(county_fips)) %>%
         # add max tract-industry job loss for whole county
         left_join(county_bins, by = "county_fips") %>%
         # join to county geographies

@@ -158,7 +158,7 @@ generate_bls_percent_change_by_industry = function(start_month_bls = 2,
   
   ##----Write out data------------------------------------------------
 
-  # Write out job chage csv specific to latest month and year
+  # # Write out job chage csv specific to latest month and year
   job_change_all_corrected %>%
     write_csv(
       str_glue("data/processed-data/job_change_ces_imputed_{start_year_bls}_{start_month_bls}_to_{latest_year}_{latest_month}.csv")
@@ -169,18 +169,17 @@ generate_bls_percent_change_by_industry = function(start_month_bls = 2,
     write_csv("data/processed-data/job_change_ces_imputed_most_recent.csv")
 
   # Write out job change for SAE, for specific month year and most recent
-  
+
   job_change_for_sae %>%
     write_csv("data/processed-data/job_change_ces_for_sae_most_recent.csv")
   job_change_for_sae %>%
     write_csv(
       str_glue("data/processed-data/job_change_ces_for_sae_{start_year_bls}_{start_month_bls}_to_{latest_year}_{latest_month}.csv")
     )
-  
+
   return(job_change_all_corrected)
 }
 
-
 job_change_all_corrected = generate_bls_percent_change_by_industry(
-  ces_filepath = "data/raw-data/big/ces_all_modified.txt"
-  )
+ces_filepath = "data/raw-data/big/ces_all_modified.txt"
+)

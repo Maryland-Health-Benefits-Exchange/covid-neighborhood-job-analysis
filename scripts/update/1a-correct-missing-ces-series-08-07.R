@@ -1,6 +1,6 @@
-# Script run just on Aug 7th as BLS ces_all.txt files was missig a few major
+# Script run just on Aug 7th as BLS ces_all.txt files was missing a few major
 # Series. We append the mining/Logging and Construction Series to the full file
-# after downloaing in the respective subseries file
+# after downloading in the respective subseries file
 library(tidyverse)
 library(tidylog)
 
@@ -23,13 +23,14 @@ subseries_02 = read_tsv("data/raw-data/big/ces_02_subseries.txt")
 
 ces_filepath = "data/raw-data/big/ces_all.txt"
 
-ces_all <- read_tsv(ces_filepath,
+ces_all <- read_tsv(ces_filepath)
                     # sometimes headers are stripped by BLS perhaps on
                     # accident. So we specify ourselves
-                    col_names = c("series_id", "year", "period", 
-                                  "value", "footnote_codes"))
+                    # E.Leo: this was causing problems, removed
+                    #col_names = c("series_id", "year", "period", 
+                     #             "value", "footnote_codes"))
 
-# There should only be one row withh an NA value for series_id (the first row
+# There should only be one row with an NA value for series_id (the first row
 # that seemed to be cutoff). COnfirm that and drop it.
 assert(ces_all %>% 
   # sOmetimes series id is NA or blank (depending on how R parses it)

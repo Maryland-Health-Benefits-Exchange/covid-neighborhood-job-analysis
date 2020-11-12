@@ -260,4 +260,4 @@ generate_all_histograms(
     tmax_bins = tmax_bins, max_bins = max_bins
 )
 
-write_histograms_to_s3()
+#write_histograms_to_s3()

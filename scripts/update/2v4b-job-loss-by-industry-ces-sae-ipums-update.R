@@ -66,14 +66,14 @@ generate_bls_percent_change_by_industry = function(start_month_bls = 2,
   # SAE
   # Add relevant variables and filter
   sae_data <- sae_all %>%
-    mutate(state = substr(series_id, 4, 5),
+    mutate(state = 24,
            area = substr(series_id, 6, 10),
            industry = substr(series_id, 11, 18),
            datatype = substr(series_id, 19, 20),
            seasonality = substr(series_id, 3, 3)) %>%
     filter(area == "00000",
            datatype == "01",
-           state != "72" & state != "78",
+           # state != "72" & state != "78",
            seasonality == "S")
   
   # Filter data to latest month as one dataset, and initial comparison
@@ -100,7 +100,7 @@ generate_bls_percent_change_by_industry = function(start_month_bls = 2,
   job_change <- sae_series_reference %>%
                 left_join(sae_series_latest, by = "series_id") %>%
                 mutate(percent_change_employment = latest / reference - 1,
-                       state = substr(series_id, 4, 5),
+                       state = 24,
                        industry = substr(series_id, 11, 18))
 
   # For missing industry-state combinations, assign the parent from the crosswalk
