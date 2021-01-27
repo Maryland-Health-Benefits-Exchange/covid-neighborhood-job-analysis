@@ -11,7 +11,8 @@ update_bls_ces_data <- function(url =
    # No manual update needed
    download.file(
       url = url,
-      destfile = "data/raw-data/big/ces_all.txt"
+      destfile = "data/raw-data/big/ces_all.txt",
+      method = "curl"
    )
 }
 
@@ -21,7 +22,8 @@ update_bls_sae_data <- function(url =
    # No manual update needed
    download.file(
       url = url,
-      destfile = "data/raw-data/big/sae_all.txt"
+      destfile = "data/raw-data/big/sae_all.txt",
+      method = "curl"
    )
 }
 
@@ -66,7 +68,8 @@ update_all_us_qcew_data <- function(url =
    # Download all states data
    download.file(
       url = url,
-      destfile = "data/raw-data/big/us_qcew.zip"
+      destfile = "data/raw-data/big/us_qcew.zip",
+      method = "curl"
    )
    
    # Extract and rename all us xlsx

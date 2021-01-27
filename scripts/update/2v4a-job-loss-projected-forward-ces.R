@@ -180,6 +180,4 @@ generate_bls_percent_change_by_industry = function(start_month_bls = 2,
   return(job_change_all_corrected)
 }
 
-job_change_all_corrected = generate_bls_percent_change_by_industry(
-ces_filepath = "data/raw-data/big/ces_all_modified.txt"
-)
+job_change_all_corrected = generate_bls_percent_change_by_industry()

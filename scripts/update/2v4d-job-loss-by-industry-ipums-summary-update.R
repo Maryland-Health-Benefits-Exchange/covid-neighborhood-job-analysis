@@ -13,15 +13,15 @@ library(ipumsr)
 
 generate_acs_percent_change_by_industry = function(start_month_bls = 2,
            # remember to copy ACS files into this directory
-           # for 1-year:
-  start_year_bls = 2020, acs_ipums_path = "data/raw-data/big/usa_00018.xml",
+  # for 1-year:
+  start_year_bls = 2020, acs_ipums_path = "data/raw-data/big/usa_00025.xml",
   # for 5-year:
-  # start_year_bls = 2020, acs_ipums_path = "data/raw-data/big/usa_00015.xml",
+  # start_year_bls = 2020, acs_ipums_path = "data/raw-data/big/usa_00024.xml",
   acs_estimates_path = "data/processed-data/job_change_acs_estimates_most_recent.csv",
   # for 1-year:
   latest_year = 2020, latest_month = 6, ipums_vintage = "2018"){
   # for 5-year:
-  # latest_year = 2020, latest_month = 6, ipums_vintage = "2013-18"){
+   #latest_year = 2020, latest_month = 6, ipums_vintage = "2013-18"){
   
   # Function to generate ACS job change by industry
   # INPUT:
@@ -69,11 +69,11 @@ generate_acs_percent_change_by_industry = function(start_month_bls = 2,
   saveRDS(ipums_data_merge, file = "data/processed-data/ipums-data-merge.Rds")
   disemploy_file_public <- ipums_data_merge %>%
     # E.Leo: for 1-year file
-    select(YEAR, SERIAL, PERNUM, percent_change_state_imputed,
-           random_number, disemploy)
+     select(YEAR, SERIAL, PERNUM, percent_change_state_imputed,
+            random_number, disemploy)
   # E.Leo: for 5-year file
-  # select(YEAR, MULTYEAR, SERIAL, PERNUM, percent_change_state_imputed,
-  # random_number, disemploy)
+  #select(YEAR, MULTYEAR, SERIAL, PERNUM, percent_change_state_imputed,
+    #     random_number, disemploy)
   
   # Checks against national data here
   net_employment <- sum(ipums_data_merge$total_employment)
